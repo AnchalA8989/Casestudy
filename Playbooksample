@@ -1,0 +1,30 @@
+
+- name: Fetch system data from Azure VMs
+  hosts: azure_vms
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: Get disk usage
+      shell: df -h
+      register: disk_usage
+
+    - name: Get memory usage
+      shell: free -m
+      register: memory_usage
+
+    - name: Get CPU load
+      shell: uptime
+      register: cpu_load
+
+    - name: Print disk usage
+      debug:
+        var: disk_usage.stdout_lines
+
+    - name: Print memory usage
+      debug:
+        var: memory_usage.stdout_lines
+
+    - name: Print CPU load
+      debug:
+        var: cpu_load.stdout_lines
